@@ -55,7 +55,7 @@ section[data-testid="stSidebar"] {
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="header">stone | Dashboard de Performance</div>', unsafe_allow_html=True)
+st.markdown('<div class="header">Hunter | Dashboard de Projeção Salarial</div>', unsafe_allow_html=True)
 
 # =========================
 # SIDEBAR
