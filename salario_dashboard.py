@@ -217,6 +217,6 @@ diferenca_bonus = (proximo_bonus - bonus) / 100
 perda = rv * diferenca_bonus
 
 if perda > 0:
-    st.error(f"Você deixou de ganhar R$ {perda:.2f}")
+    st.error(f"Você deixou de ganhar R$ cuidado com sua ineficiência!")
 else:
-    st.success("Eficiência máxima atingida")
+    st.success("Você manteve uma boa meta de ineficiência! Continue assim =D")
