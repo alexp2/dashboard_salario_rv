@@ -4,19 +4,16 @@ import plotly.graph_objects as go
 st.set_page_config(page_title="Dashboard RV", layout="wide")
 
 # =========================
-# ESTILO DA PÁGINA
+# ESTILO
 # =========================
 
 st.markdown("""
 <style>
-
-/* BASE */
 html, body, [class*="css"] {
     font-family: 'Segoe UI', sans-serif;
     color: #1F2937;
 }
 
-/* FUNDO */
 .block-container {
     padding-top: 3rem;
     padding-left: 2rem;
@@ -24,7 +21,6 @@ html, body, [class*="css"] {
     background-color: #F7F9F8;
 }
 
-/* HEADER */
 .header {
     background-color: #00A868;
     padding: 16px;
@@ -35,16 +31,10 @@ html, body, [class*="css"] {
     margin-bottom: 25px;
 }
 
-/* SIDEBAR */
 section[data-testid="stSidebar"] {
     background-color: #F0F2F1;
 }
 
-section[data-testid="stSidebar"] * {
-    color: #1F2937 !important;
-}
-
-/* TÍTULOS */
 .section-title {
     font-size: 20px;
     font-weight: 600;
@@ -53,7 +43,6 @@ section[data-testid="stSidebar"] * {
     color: #111827;
 }
 
-/* MÉTRICAS */
 [data-testid="stMetricValue"] {
     font-size: 26px;
     font-weight: 600;
@@ -62,18 +51,11 @@ section[data-testid="stSidebar"] * {
 
 [data-testid="stMetricLabel"] {
     color: #6B7280;
-    font-size: 14px;
 }
-
-/* INPUTS */
-input {
-    color: #111827 !important;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="header">Hunter | Dashboard de Projeção Salarial</div>', unsafe_allow_html=True)
+st.markdown('<div class="header">stone | Dashboard de Performance</div>', unsafe_allow_html=True)
 
 # =========================
 # SIDEBAR
@@ -85,6 +67,9 @@ st.sidebar.markdown("### 💰 Financeiro")
 salario = st.sidebar.number_input("Salário", 2000.0, 6000.0, 2000.0)
 rv = st.sidebar.number_input("RV", 0.0, 10000.0, 1000.0)
 
+# ✅ NOVO BOTÃO VT
+usa_vt = st.sidebar.checkbox("Utiliza Vale Transporte (6%)?", value=True)
+
 st.sidebar.markdown("### 🎯 Metas")
 meta_individual = st.sidebar.number_input("Meta Individual %", 0.0, 200.0, 100.0)
 meta_mesa = st.sidebar.number_input("Meta Mesa %", 0.0, 200.0, 100.0)
@@ -94,7 +79,7 @@ st.sidebar.markdown("### ⚡ Eficiência")
 ineficiencia = st.sidebar.number_input("Ineficiência %", 0.0, 100.0, 30.0)
 
 # =========================
-# FUNÇÕES (MESMO)
+# FUNÇÕES
 # =========================
 
 def regua_meta(v):
@@ -125,7 +110,7 @@ def regua_inef(e):
     return 100, 100
 
 # =========================
-# CÁLCULOS (MESMO)
+# CÁLCULOS
 # =========================
 
 meta_ind = regua_meta(meta_individual)
@@ -144,9 +129,15 @@ percentual = (
 percentual = percentual / 100
 rv_final = rv * percentual
 
+# =========================
+# DESCONTOS
+# =========================
+
 inss = salario * 0.14
 irpf = (salario - inss) * 0.15 if salario > 2112 else 0
-vt = salario * 0.06
+
+# ✅ VT condicional
+vt = salario * 0.06 if usa_vt else 0
 
 salario_liquido = salario - inss - irpf - vt + rv_final
 
@@ -160,7 +151,7 @@ col1, col2, col3, col4 = st.columns(4)
 
 col1.metric("Salário", f"R$ {salario:.2f}")
 col2.metric("RV Final", f"R$ {rv_final:.2f}")
-col3.metric("%RV Final", f"{percentual*100:.1f}%")
+col3.metric("% Final", f"{percentual*100:.1f}%")
 col4.metric("Salário Líquido", f"R$ {salario_liquido:.2f}")
 
 # =========================
@@ -226,6 +217,6 @@ diferenca_bonus = (proximo_bonus - bonus) / 100
 perda = rv * diferenca_bonus
 
 if perda > 0:
-    st.error(f"Você deixou de ganhar R$ por conta da ineficiência!")
+    st.error(f"Você deixou de ganhar R$ {perda:.2f}")
 else:
-    st.success("Você manteve uma boa ineficiência e não perdeu bônus!")
+    st.success("Eficiência máxima atingida")
