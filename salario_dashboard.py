@@ -75,7 +75,7 @@ meta_individual = st.sidebar.number_input("Meta Individual %", 0.0, 200.0, 100.0
 meta_mesa = st.sidebar.number_input("Meta Mesa %", 0.0, 200.0, 100.0)
 meta_operacao = st.sidebar.number_input("Meta Operação %", 0.0, 200.0, 100.0)
 
-st.sidebar.markdown("### ⚡ Eficiência")
+st.sidebar.markdown("### ⚡ Ineficiência")
 ineficiencia = st.sidebar.number_input("Ineficiência %", 0.0, 100.0, 30.0)
 
 # =========================
